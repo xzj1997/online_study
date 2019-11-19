@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>在线学习系统后台</title>
@@ -13,7 +13,7 @@
 <body>
 <div class="x-body layui-anim layui-anim-up">
     <blockquote class="layui-elem-quote">欢迎管理员：
-        <span class="x-red">test</span>！当前时间:2018-04-25 20:50:53
+        <span class="x-red" th:text="${session.user.getUserNumber()}">test</span>！当前时间:<span th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy年MM月dd日 hh:mm:ss')}"></span>
     </blockquote>
 </div>
 </body>

@@ -1,56 +1,121 @@
 package cn.cqgcxy.domain;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import	java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 用户的实体类
  */
 @Entity
+@Table(name = "user")
 public class User implements Serializable {
     //序列化id
     private static final long serialVersionUID = 45L;
+
+    //主键id
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;//主键id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private Long userId;
+
     //用户名
-    private String name;
+    @Column(name = "user_name")
+    private String userName;
+
+    //账号
+    @Column(name = "user_number")
+    private String userNumber;
+
     //用户密码
-    private String password;
+    @Column(name = "user_password")
+    private String UserPassword;
+
     //用户类型
-    private String type;
+    @Column(name = "user_type")
+    private String UserType;
 
-    public Long getId() {
-        return id;
+    @ManyToOne
+    @JoinColumn(name = "cg_class_id")
+    @JsonBackReference
+    private CgClass cgClass;
+
+    //一个学生有很多的学习记录
+    @OneToMany(mappedBy = "user")
+    private Set<StudyRecord> studyRecords = new HashSet<>();
+
+    @Transient
+    private String className;
+
+    public String getClassName() {
+        return className;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setClassName(String className) {
+        this.className = className;
     }
 
-    public String getName() {
-        return name;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getType() {
-        return type;
+    public String getUserNumber() {
+        return userNumber;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setUserNumber(String userNumber) {
+        this.userNumber = userNumber;
+    }
+
+    public String getUserPassword() {
+        return UserPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        UserPassword = userPassword;
+    }
+
+    public String getUserType() {
+        return UserType;
+    }
+
+    public void setUserType(String userType) {
+        UserType = userType;
+    }
+
+    public CgClass getCgClass() {
+        return cgClass;
+    }
+
+    public void setCgClass(CgClass cgClass) {
+        this.cgClass = cgClass;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", userNumber='" + userNumber + '\'' +
+                ", UserPassword='" + UserPassword + '\'' +
+                ", UserType='" + UserType + '\'' +
+                ", cgClass=" + cgClass +
+                ", className='" + className + '\'' +
+                '}';
     }
 }

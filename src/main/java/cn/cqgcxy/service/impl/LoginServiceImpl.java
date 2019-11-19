@@ -14,7 +14,7 @@ public class LoginServiceImpl implements LoginService {
     private UserDao userDao;
 
     @Override//通过用户名查询用户
-    public User userLogin(String username) {
-        return userDao.userLogin(username);
+    public User userLogin(String number) {
+        return userDao.userLogin(number);
     }
 }

@@ -1,11 +1,13 @@
 package cn.cqgcxy.controller.admin;
-import	java.lang.ref.Reference;
 import cn.cqgcxy.domain.User;
 import cn.cqgcxy.service.admin.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/admin")
@@ -19,15 +21,13 @@ public class LoginController {
      * @return
      */
     @RequestMapping("/login")
-    @ResponseBody
-    public String userLogin(String username,String password,String data){
-        System.out.println(data );
-
-        System.out.println(username+password);
-        if (loginService.userLogin(username) != null){
-            User user = loginService.userLogin(username);
-            if (password.equals(user.getPassword())) {
-                return "登录成功";
+    public String userLogin(String number, String password, HttpServletRequest request){
+        if (loginService.userLogin(number) != null){
+            User user = loginService.userLogin(number);
+            if (password.equals(user.getUserPassword())) {
+                HttpSession session = request.getSession();
+                session.setAttribute("user",user);
+                return "redirect:/views/index";
             }
             else {
                 return "密码错误";
@@ -38,4 +38,19 @@ public class LoginController {
         }
 
     }
+
+    /**
+     * 退出登录
+     * @param request
+     * @return
+     */
+    @RequestMapping("/outLogin")
+    public String outLogin(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.removeAttribute("user");
+        return "redirect:/views/login";
+    }
+
+
+
 }
